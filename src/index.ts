@@ -103,7 +103,7 @@ async function processInvoice(invoice: Invoice): Promise<ProcessingResult> {
 
 (async () => {
   for (const invoice of invoices) {
-    console.log(`\n📄 Processing ${invoice.invoiceId} (${invoice.vendor})`);
+    console.log(`\nProcessing ${invoice.invoiceId} (${invoice.vendor})`);
 
     const result = await processInvoice(invoice);
 
