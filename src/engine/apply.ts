@@ -77,7 +77,7 @@ export function applyMemory(
     appliedMemories
   );
 
-    /* ---------------- VAT Included Correction (Parts AG) ---------------- */
+    // VAT Included Correction (Parts AG)
 
   if (
     normalizedInvoice.rawText.includes("MwSt. inkl") ||
@@ -89,7 +89,7 @@ export function applyMemory(
     appliedMemories.push("CorrectionMemory:VAT_INCLUDED");
   }
 
-    /* ---------------- Currency Recovery ---------------- */
+    // Currency Recovery
 
   if (!invoice.fields.currency && invoice.rawText.includes("EUR")) {
     normalizedInvoice.fields.currency = "EUR";
@@ -97,7 +97,7 @@ export function applyMemory(
     appliedMemories.push("CorrectionMemory:CURRENCY_RECOVERY");
   }
 
-    /* ---------------- Freight SKU Mapping ---------------- */
+    // Freight SKU Mapping
 
   if (
     invoice.vendor === "Freight & Co" &&

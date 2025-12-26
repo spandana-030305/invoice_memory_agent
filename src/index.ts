@@ -11,7 +11,7 @@ import { Invoice } from "./models/invoice";
 import { ProcessingResult } from "./models/output";
 import { AuditStep } from "./models/output";
 
-/* ---------- Load Data ---------- */
+// Load Data
 
 const invoicesPath = path.join(__dirname, "../data/invoices_extracted.json");
 const humanCorrectionsPath = path.join(
@@ -24,12 +24,12 @@ const humanCorrections = JSON.parse(
   fs.readFileSync(humanCorrectionsPath, "utf-8")
 );
 
-/* ---------- Initialize DB ---------- */
+// Initialize DB
 
 console.log("Starting Invoice Memory Agent...");
 initializeMemoryTables();
 
-/* ---------- Helper: get human decision ---------- */
+// Human Decision
 
 function getHumanDecision(invoiceId: string): "approved" | "rejected" {
   const record = humanCorrections.find(
@@ -38,12 +38,12 @@ function getHumanDecision(invoiceId: string): "approved" | "rejected" {
   return record?.finalDecision ?? "approved";
 }
 
-/* ---------- Process Invoices ---------- */
+// Process Invoices
 
 async function processInvoice(invoice: Invoice): Promise<ProcessingResult> {
   const auditTrail: AuditStep[] = [];
 
-  /* Recall */
+  // Recall
   const recallResult = await recallMemory(invoice);
   auditTrail.push({
     step: "recall",
@@ -51,7 +51,7 @@ async function processInvoice(invoice: Invoice): Promise<ProcessingResult> {
     details: `Recalled ${recallResult.vendorMemories.length} vendor memories`
   });
 
-  /* Apply */
+  // Apply
   const applyResult = applyMemory(invoice, recallResult);
   auditTrail.push({
     step: "apply",
@@ -59,7 +59,7 @@ async function processInvoice(invoice: Invoice): Promise<ProcessingResult> {
     details: applyResult.proposedCorrections.join("; ") || "No corrections suggested"
   });
 
-  /* Decide */
+  // Decide
   const decision = decideAction(applyResult, recallResult);
   auditTrail.push({
     step: "decide",
@@ -67,7 +67,7 @@ async function processInvoice(invoice: Invoice): Promise<ProcessingResult> {
     details: decision.reasoning
   });
 
-  /* Learn */
+  // Learn
   const humanDecision = getHumanDecision(invoice.invoiceId);
   learnFromHuman(
     invoice.invoiceId,
@@ -87,7 +87,7 @@ async function processInvoice(invoice: Invoice): Promise<ProcessingResult> {
     details: `Human decision: ${humanDecision}`
   });
 
-  /* Final Output */
+  // Final Output
   return {
     normalizedInvoice: applyResult.normalizedInvoice,
     proposedCorrections: applyResult.proposedCorrections,
@@ -99,7 +99,7 @@ async function processInvoice(invoice: Invoice): Promise<ProcessingResult> {
   };
 }
 
-/* ---------- Run Demo ---------- */
+// Demo Run
 
 (async () => {
   for (const invoice of invoices) {

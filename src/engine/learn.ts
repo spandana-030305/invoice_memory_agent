@@ -112,7 +112,7 @@ export function learnFromHuman(
 ) {
   logAudit("learn", `Learning from invoice ${invoiceId}`);
 
-  // BOOTSTRAP vendor memory on first approval
+  // Vendor memory on first approval
   if (finalDecision === "approved" && appliedMemories.length === 0) {
     learnVendorMemory(
       vendor,
