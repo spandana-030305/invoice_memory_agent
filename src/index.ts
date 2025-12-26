@@ -59,7 +59,7 @@ async function processInvoice(invoice: Invoice): Promise<ProcessingResult> {
     details: applyResult.proposedCorrections.join("; ") || "No corrections suggested"
   });
 
-  // Decide
+  // Decide 
   const decision = decideAction(applyResult, recallResult);
   auditTrail.push({
     step: "decide",
