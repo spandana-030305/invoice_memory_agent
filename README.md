@@ -40,12 +40,15 @@ When human review is required, decisions and feedback flow into the Learning Lay
 
 This architecture ensures the system remains transparent, auditable, conservative in automation, and capable of improving over time through real human feedback.
 
-## System Flow
+## Solution:
+
+## System Flow:
 
 Each invoice is processed sequentially using a four-stage pipeline:
+
 Recall → Apply → Decide → Learn
 
-# Recall Stage
+# Recall Stage:
 
 For a given invoice, the system retrieves previously stored information from persistent memory, including:
 
@@ -59,7 +62,7 @@ For a given invoice, the system retrieves previously stored information from per
 
 This stage provides historical context without modifying invoice data.
 
-# Apply Stage
+# Apply Stage:
 
 Using the recalled memory, the system proposes corrections and normalizations such as:
 
@@ -73,7 +76,7 @@ Using the recalled memory, the system proposes corrections and normalizations su
 
 All proposed changes are explicitly recorded along with the memory patterns that triggered them. The system produces a normalized invoice representation and a list of suggested corrections.
 
-# Decision Stage
+# Decision Stage:
 
 After applying memory, the system evaluates whether the invoice can be processed automatically or requires human review.
 
@@ -91,7 +94,7 @@ Each decision includes:
 
 - A flag indicating whether human review is required
 
-# Learning Stage
+# Learning Stage:
 
 Once a final human decision (approved or rejected) is available, the system updates its memory:
 
@@ -105,7 +108,7 @@ Once a final human decision (approved or rejected) is available, the system upda
 
 Learning is incremental and persists across executions.
 
-# Memory Persistence
+# Memory Persistence:
 
 - All memory is stored in a SQLite database
 
@@ -115,7 +118,7 @@ Learning is incremental and persists across executions.
 
 This allows the system to improve its behavior over time without retraining.
 
-# Output
+# Output:
 
 For each processed invoice, the system produces a structured output containing:
 
@@ -132,3 +135,4 @@ For each processed invoice, the system produces a structured output containing:
 - A complete audit trail covering all processing stages
 
 The system processes invoices sequentially from the provided dataset and outputs a structured JSON result for each invoice.
+
